@@ -1,0 +1,22 @@
+h1 { text-align: center; }
+
+.header {
+    color: white;
+    text-decoration: underline;
+}
+html {
+    background-image: url(../../Introduction-to-HTML/img/milky-way-starry-sky-night-sky-star-956999.jpeg);
+    background-size: cover;
+    color: red;
+    font-family: "Adelle Sans Devanagari";
+}
+
+ol { list-style: upper-alpha; }
+ul { list-style: square; }
+
+table, th, td {
+    border: 1px solid;
+}
+a:hover {
+    background-color: yellow;
+}
