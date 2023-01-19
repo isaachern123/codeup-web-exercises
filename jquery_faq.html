@@ -32,7 +32,10 @@
     $('h3').click(function () {
       $(this).next().css('font-weight', 'bold')
     })
-  })o
+    $('li').click(function () {
+      $(this).parent().children().first().css('color', 'blue')
+    })
+  })
 </script>
   <dl>
     <dt>1</dt>
@@ -68,21 +71,21 @@
     <button id="toggle">Toggle</button>
   </dl>
   <h3>Arches</h3>
-  <ul>
+  <ul class="facts">
     <li>Acreage: 76,519 acres or 119 square miles</li>
     <li>Visitation: 1,539,028 </li>
     <li>Highest Elevation: Elephant Butte 5,653 feet</li>
     <li>Lowest Elevation: Visitor Center 4,085 feet</li>
   </ul>
   <h3>Badlands</h3>
-  <ul>
+  <ul class="facts">
     <li>Location: South Dakota</li>
     <li>Acreage:  244,000 acres</li>
     <li>Visitation: 970,998 in 2019</li>
     <li>Highest Elevation: 3,247 feet at Sheep Mountain</li>
   </ul>
   <h3>Everglades</h3>
-  <ul>
+  <ul class="facts">
     <li>Largest continuous stand of sawgrass prairie in North America.</li>
     <li>Predominant water recharge area for all of South Florida through the Biscayne aquifer.</li>
     <li>Home of thirteen endangered and ten threatened species.</li>
