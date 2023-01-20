@@ -1,2 +1,4 @@
 .idea
 js/keys.js
+.DS_Store
+*.iml
