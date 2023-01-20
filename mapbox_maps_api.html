@@ -43,6 +43,9 @@
         marker.setLngLat([-98.4986, 29.5185]);
         marker.addTo(map);
 
+
+        map.addControl(new mapboxgl.NavigationControl());
+
         function pinThatAddress(address) {
             geocode(address, MAPBOX_API_KEY)
                 .then(function (address) {
@@ -67,7 +70,40 @@
             {
                 address: "North Star Mall",
                 popupHTML: "<p>North Star Mall</p>"
+            },
+
+            {
+                address: "10330 Ingram Rd",
+                popupHTML: "<p>My House</p>"
+            },
+
+            {
+                address: "San Antonio State Hospital",
+                popupHTML: "<p>San Antonio State Hospital</p>"
+            },
+
+            {
+                address: "12217 Poinciana St",
+                popupHTML: "<p>Moms house</p>"
+            },
+
+            {
+                address: "1132 Ivystone Sq",
+                popupHTML: "<p>Andres house</p>"
+            },
+
+            {
+                address: "5210 Ginger Rise",
+                popupHTML: "<p>Reys house</p>"
+            },
+
+            {
+                address: "7703 Red Hill Place",
+                popupHTML: "<p>Zachys house</p>"
             }
+
+
+
         ]
 
 
