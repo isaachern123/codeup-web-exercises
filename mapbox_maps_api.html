@@ -1,1 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>First Mapbox Map</title>
+    <!-- Mapbox CSS -->
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.css' rel='stylesheet' />
+    <!-- Custom CSS -->
+    <style>
+        #map {
+            /* the width and height may be set to any size */
+            width: 100%;
+            height: 700px;
+        }
+    </style>
+</head>
+<body>
 
+<h1>My First Mapbox Map!</h1>
+
+<!-- The HTML element that serves as the Mapbox container -->
+<div id='map'></div>
+
+<!-- Mapbox JS -->
+<script src='https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.js'></script>
+<script src='js/jquery-3.6.3.js'></script>
+<script src="js/mapbox-geocoder-utils.js"></script>
+<script src="js/keys.js"></script>
+
+<!-- Custom JS -->
+<script>
+    $(document).ready(function () {
+        mapboxgl.accessToken = MAPBOX_API_KEY;
+
+        const map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/streets-v11',
+            zoom: 10,
+            center: [-98.4916, 29.4252]
+        });
+
+        const marker = new mapboxgl.Marker();
+        marker.setLngLat([-98.4986, 29.5185]);
+        marker.addTo(map);
+
+        function pinThatAddress(address) {
+            geocode(address, MAPBOX_API_KEY)
+                .then(function (address) {
+                    const marker = new mapboxgl.Marker();
+                    marker.setLngLat(address);
+                    marker.addTo(map);
+                })
+
+        }
+
+        let restaurants = [
+            {
+                address: "Grand Tequila",
+                popupHTML: "<p>Grand Tequila</p>"
+            },
+
+            {
+                address: "Rackspace",
+                popupHTML: "<p>Rackspace</p>"
+            },
+
+            {
+                address: "North Star Mall",
+                popupHTML: "<p>North Star Mall</p>"
+            }
+        ]
+
+
+
+            restaurants.forEach(function (restaurant) {
+                var x = restaurant.address
+                console.log(x);
+                geocode(x, MAPBOX_API_KEY).then(function (coordinates) {
+                    let popup = new mapboxgl.Popup()
+                        .setHTML(restaurant.popupHTML);
+                    let marker = new mapboxgl.Marker()
+                        .setLngLat(coordinates)
+                        .addTo(map)
+                        .setPopup(popup);
+                })
+            })
+    })
+
+
+
+</script>
+</body>
+</html>
