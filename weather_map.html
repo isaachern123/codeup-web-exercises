@@ -36,7 +36,7 @@
 </nav>
 
 
-
+<div id="weather"></div>
 <div id='map'></div>
 <pre id="coordinates" class="coordinates"></pre>
 
@@ -50,29 +50,33 @@
 
     mapboxgl.accessToken = MAPBOX_API_KEY;
     const coordinates = document.getElementById('coordinates');
+    const weather = document.getElementById('weather');
     const map = new mapboxgl.Map({
       container: 'map',
       style: 'mapbox://styles/mapbox/streets-v11',
       zoom: 0,
-
+      center: [-90.96, -0.47],
     });
 
     const marker = new mapboxgl.Marker({
       draggable: true
     })
+
             .setLngLat([0, 0])
             .addTo(map);
+
 
     function onDragEnd() {
       const lngLat = marker.getLngLat();
       reverseGeocode({lng: lngLat.lng, lat: lngLat.lat}, MAPBOX_API_KEY).then(function(results) {
-        $.get("http://api.openweathermap.org/data/2.5/onecall", {
+        $.get("http://api.openweathermap.org/data/2.5/forecast", {
           APPID: OPENWEATHER_API_KEY,
           lat:   lngLat.lng,
           lon:   lngLat.lat,
           units: "imperial"
         }).done(function(data) {
-
+          weather.style.display = 'block';
+          weather.innerHTML = `City: ${data.city.name}<br />Weather:`
         });
       });
       coordinates.style.display = 'block';
@@ -80,8 +84,6 @@
     }
 
     marker.on('dragend', onDragEnd);
-
-
 
 
   })
