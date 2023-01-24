@@ -36,7 +36,7 @@
 </nav>
 
 
-<div id="weather"></div>
+<div id="weather" class="d-flex w-100 justify-content-around"></div>
 <div id='map'></div>
 <pre id="coordinates" class="coordinates"></pre>
 
@@ -54,15 +54,15 @@
     const map = new mapboxgl.Map({
       container: 'map',
       style: 'mapbox://styles/mapbox/streets-v11',
-      zoom: 0,
-      center: [-90.96, -0.47],
+      zoom: 5,
+      center: [-98.49363, 29.42412],
     });
 
     const marker = new mapboxgl.Marker({
       draggable: true
     })
 
-            .setLngLat([0, 0])
+            .setLngLat([-98.49363, 29.42412])
             .addTo(map);
 
 
@@ -75,8 +75,9 @@
           lon:   lngLat.lat,
           units: "imperial"
         }).done(function(data) {
+          console.log(data)
           weather.style.display = 'block';
-          weather.innerHTML = `City: ${data.city.name}<br />Weather:`
+          weather.innerHTML = `<p>City: ${data.city.name}<br />Day: Monday<br />Temp: ${data.list[0].main.temp}<br />Weather: ''</p><p>City: ${data.city.name}<br />Day: Tuesday<br />Temp: ${data.list[8].main.temp}<br />Weather: ''</p><p>City: ${data.city.name}<br />Day: Wednesday<br />Temp: ${data.list[16].main.temp}<br />Weather: ''</p><p>City: ${data.city.name}<br />Day: Thursday<br />Temp: ${data.list[24].main.temp}<br />Weather: ''</p><p>City: ${data.city.name}<br />Day: Friday<br />Temp: ${data.list[32].main.temp}<br />Weather: ''</p>`
         });
       });
       coordinates.style.display = 'block';
@@ -85,6 +86,9 @@
 
     marker.on('dragend', onDragEnd);
 
+    function parseDate(timestamp) {
+      return new Date(timestamp * 1000).toLocaleDateString();
+    }
 
   })
 
