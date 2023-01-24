@@ -25,20 +25,74 @@
       border-radius: 3px;
       display: none;
     }
+    body{
+      margin:0;
+      padding:0;
+      font-family:sans-serif;
+      background:#000;
+      overflow:hidden;
+    }
+    .text-color {
+      color: white;
+    }
+    @font-face {
+      font-family: 'Rocher';
+      src: url(https://assets.codepen.io/9632/RocherColorGX.woff2);
+    }
+    h1 {
+      margin: 0;
+      font-family: 'Rocher';
+      text-align: center;
+      font-size: 50px;
+      height: 10vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    @font-palette-values --Grays {
+      font-family: Rocher;
+      base-palette: 9;
+    }
+
+    @font-palette-values --Purples {
+      font-family: Rocher;
+      base-palette: 6;
+    }
+
+    @font-palette-values --Mint {
+      font-family: Rocher;
+      base-palette: 7;
+    }
+
+    .grays {
+      font-palette: --Grays;
+    }
+
+    .purples {
+      font-palette: --Purples;
+      font-family: 'Rocher';
+
+    }
+
+    .mint {
+      font-palette: --Mint;
+    }
 
   </style>
 </head>
 <body>
 
-<!--<nav class="nav">-->
-<!--  <form class="d-flex" role="search">-->
-<!--    <input id='input' class="form-control me-2" type="search" placeholder="Search" aria-label="Search">-->
-<!--    <button id="btn" class="btn btn-outline-success" type="submit">Search</button>-->
-<!--  </form>-->
-<!--</nav>-->
+<nav class="nav">
+  <form class="d-flex" role="search">
+    <input id='input' class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+    <button id="btn" class="btn btn-outline-success" type="button">Search</button>
+  </form>
+</nav>
 
-<h2 id="location" class="text-center"></h2>
-<div id="weather" class="d-flex w-100 justify-content-around"></div>
+<h1 id="location" class="text-center grays"></h1>
+<div id="weather" class="d-flex w-100 justify-content-around purples"></div>
 <div id='map'></div>
 <pre id="coordinates" class="coordinates"></pre>
 
@@ -61,15 +115,15 @@
       center: [20.9394, 6.6111],
     });
 
-    const geocoder = new MapboxGeocoder({
-      // Initialize the geocoder
-      accessToken: mapboxgl.accessToken, // Set the access token
-      mapboxgl: mapboxgl, // Set the mapbox-gl instance
-      marker: false // Do not use the default marker style
-    });
-
-// Add the geocoder to the map
-    map.addControl(geocoder);
+//     const geocoder = new MapboxGeocoder({
+//       // Initialize the geocoder
+//       accessToken: mapboxgl.accessToken, // Set the access token
+//       mapboxgl: mapboxgl, // Set the mapbox-gl instance
+//       marker: false // Do not use the default marker style
+//     });
+//
+// // Add the geocoder to the map
+//     map.addControl(geocoder);
 
 
 
@@ -81,8 +135,41 @@
             .addTo(map);
 
 
+    $('#btn').click(function () {
+      let location = $("#input").val()
+        geocode(location, MAPBOX_API_KEY).then(function(result) {
+          map.easeTo({
+            center: [result[0], result[1]]
+          });
+          $.get("http://api.openweathermap.org/data/2.5/forecast", {
+            APPID: OPENWEATHER_API_KEY,
+            lat:   result[1],
+            lon:   result[0],
+            units: "imperial"
+          }).done(function(data) {
+            console.log(data)
+            weather.style.display = 'block';
+            let day1 = data.list[0].dt
+            let day2 = data.list[8].dt
+            let day3 = data.list[16].dt
+            let day4 = data.list[24].dt
+            let day5 = data.list[32].dt
+            let newDay1 = parseDate(day1)
+            let newDay2 = parseDate(day2)
+            let newDay3 = parseDate(day3)
+            let newDay4 = parseDate(day4)
+            let newDay5 = parseDate(day5)
+            location.innerHTML = `${data.city.name}`
+            weather.innerHTML = `<p class="cards">${newDay1}<br />${data.list[0].main.temp}&#8457<br />${data.list[0].weather[0].description}</p><p class="cards">${newDay2}<br />${data.list[8].main.temp}&#8457<br />${data.list[8].weather[0].description}</p><p class="cards">${newDay3}<br />${data.list[16].main.temp}&#8457<br />${data.list[16].weather[0].description}</p><p class="cards">${newDay4}<br />${data.list[24].main.temp}&#8457<br />${data.list[24].weather[0].description}</p><p class="cards">${newDay5}<br />${data.list[32].main.temp}&#8457<br />${data.list[32].weather[0].description}</p>`
+          });
+        });
+    })
+
     function onDragEnd() {
       const lngLat = marker.getLngLat();
+      map.easeTo({
+        center: [lngLat.lng, lngLat.lat]
+      });
       reverseGeocode({lng: lngLat.lng, lat: lngLat.lat}, MAPBOX_API_KEY).then(function(results) {
         $.get("http://api.openweathermap.org/data/2.5/forecast", {
           APPID: OPENWEATHER_API_KEY,
