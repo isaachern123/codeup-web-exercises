@@ -115,6 +115,7 @@
       center: [20.9394, 6.6111],
     });
 
+
     const marker = new mapboxgl.Marker({
       draggable: true
     })
@@ -202,7 +203,7 @@
     function parseDate(timestamp) {
       return new Date(timestamp * 1000).toLocaleDateString();
     }
-
+    map.addControl(new mapboxgl.NavigationControl());
   })
 
   // ${data.city.name}
