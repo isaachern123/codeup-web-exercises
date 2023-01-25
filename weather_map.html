@@ -136,8 +136,8 @@
 
 
     $('#btn').click(function () {
-      let location = $("#input").val()
-        geocode(location, MAPBOX_API_KEY).then(function(result) {
+      let input = $("#input").val()
+        geocode(input, MAPBOX_API_KEY).then(function(result) {
           map.easeTo({
             center: [result[0], result[1]]
           });
@@ -160,6 +160,7 @@
             let newDay4 = parseDate(day4)
             let newDay5 = parseDate(day5)
             location.innerHTML = `${data.city.name}`
+            console.log(location)
             weather.innerHTML = `<p class="cards">${newDay1}<br />${data.list[0].main.temp}&#8457<br />${data.list[0].weather[0].description}</p><p class="cards">${newDay2}<br />${data.list[8].main.temp}&#8457<br />${data.list[8].weather[0].description}</p><p class="cards">${newDay3}<br />${data.list[16].main.temp}&#8457<br />${data.list[16].weather[0].description}</p><p class="cards">${newDay4}<br />${data.list[24].main.temp}&#8457<br />${data.list[24].weather[0].description}</p><p class="cards">${newDay5}<br />${data.list[32].main.temp}&#8457<br />${data.list[32].weather[0].description}</p>`
           });
         });
