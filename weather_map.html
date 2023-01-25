@@ -84,12 +84,12 @@
 </head>
 <body>
 
-<nav class="nav">
-  <form class="d-flex" role="search">
-    <input id='input' class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-    <button id="btn" class="btn btn-outline-success" type="button">Search</button>
-  </form>
-</nav>
+<!--<nav class="nav">-->
+<!--  <form class="d-flex" role="search">-->
+<!--    <input id='input' class="form-control me-2" type="search" placeholder="Search" aria-label="Search">-->
+<!--    <button id="btn" class="btn btn-outline-success" type="button">Search</button>-->
+<!--  </form>-->
+<!--</nav>-->
 
 <h1 id="location" class="text-center grays"></h1>
 <div id="weather" class="d-flex w-100 justify-content-around purples"></div>
@@ -111,21 +111,9 @@
     const map = new mapboxgl.Map({
       container: 'map',
       style: 'mapbox://styles/mapbox/navigation-night-v1',
-      zoom: 5,
+      zoom: 6,
       center: [20.9394, 6.6111],
     });
-
-//     const geocoder = new MapboxGeocoder({
-//       // Initialize the geocoder
-//       accessToken: mapboxgl.accessToken, // Set the access token
-//       mapboxgl: mapboxgl, // Set the mapbox-gl instance
-//       marker: false // Do not use the default marker style
-//     });
-//
-// // Add the geocoder to the map
-//     map.addControl(geocoder);
-
-
 
     const marker = new mapboxgl.Marker({
       draggable: true
@@ -135,37 +123,47 @@
             .addTo(map);
 
 
-    $('#btn').click(function () {
-      let input = $("#input").val()
-        geocode(input, MAPBOX_API_KEY).then(function(result) {
-          marker.setLngLat([result[0], result[1]])
-          map.easeTo({
-            center: [result[0], result[1]]
-          });
-          $.get("http://api.openweathermap.org/data/2.5/forecast", {
-            APPID: OPENWEATHER_API_KEY,
-            lat:   result[1],
-            lon:   result[0],
-            units: "imperial"
-          }).done(function(data) {
-            console.log(data)
-            weather.style.display = 'block';
-            let day1 = data.list[0].dt
-            let day2 = data.list[8].dt
-            let day3 = data.list[16].dt
-            let day4 = data.list[24].dt
-            let day5 = data.list[32].dt
-            let newDay1 = parseDate(day1)
-            let newDay2 = parseDate(day2)
-            let newDay3 = parseDate(day3)
-            let newDay4 = parseDate(day4)
-            let newDay5 = parseDate(day5)
-            location.innerHTML = `${data.city.name}`
-            console.log(location)
-            weather.innerHTML = `<p class="cards">${newDay1}<br />${data.list[0].main.temp}&#8457<br />${data.list[0].weather[0].description}</p><p class="cards">${newDay2}<br />${data.list[8].main.temp}&#8457<br />${data.list[8].weather[0].description}</p><p class="cards">${newDay3}<br />${data.list[16].main.temp}&#8457<br />${data.list[16].weather[0].description}</p><p class="cards">${newDay4}<br />${data.list[24].main.temp}&#8457<br />${data.list[24].weather[0].description}</p><p class="cards">${newDay5}<br />${data.list[32].main.temp}&#8457<br />${data.list[32].weather[0].description}</p>`
-          });
-        });
+
+    const geocoder = new MapboxGeocoder({
+      // Initialize the geocoder
+      accessToken: mapboxgl.accessToken, // Set the access token
+      mapboxgl: mapboxgl, // Set the mapbox-gl instance
+      marker: false // Do not use the default marker style
+    });
+
+// Add the geocoder to the map
+    map.addControl(geocoder);
+
+    geocoder.on('result',function(result) {
+      marker.setLngLat([result.result.center[0], result.result.center[1]])
+      let lat = result.result.center[1]
+      let lon = result.result.center[0]
+      console.log(lat)
+      $.get("http://api.openweathermap.org/data/2.5/forecast", {
+        APPID: OPENWEATHER_API_KEY,
+        lat:   lat,
+        lon:   lon,
+        units: "imperial"
+      }).done(function(data) {
+        console.log(data)
+        weather.style.display = 'block';
+        let day1 = data.list[0].dt
+        let day2 = data.list[8].dt
+        let day3 = data.list[16].dt
+        let day4 = data.list[24].dt
+        let day5 = data.list[32].dt
+        let newDay1 = parseDate(day1)
+        let newDay2 = parseDate(day2)
+        let newDay3 = parseDate(day3)
+        let newDay4 = parseDate(day4)
+        let newDay5 = parseDate(day5)
+        location.innerHTML = `${data.city.name}`
+        console.log(location)
+        weather.innerHTML = `<p class="cards">${newDay1}<br />${data.list[0].main.temp}&#8457<br />${data.list[0].weather[0].description}</p><p class="cards">${newDay2}<br />${data.list[8].main.temp}&#8457<br />${data.list[8].weather[0].description}</p><p class="cards">${newDay3}<br />${data.list[16].main.temp}&#8457<br />${data.list[16].weather[0].description}</p><p class="cards">${newDay4}<br />${data.list[24].main.temp}&#8457<br />${data.list[24].weather[0].description}</p><p class="cards">${newDay5}<br />${data.list[32].main.temp}&#8457<br />${data.list[32].weather[0].description}</p>`
+      });
     })
+
+
 
     function onDragEnd() {
       const lngLat = marker.getLngLat();
