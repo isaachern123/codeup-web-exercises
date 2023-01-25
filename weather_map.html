@@ -138,6 +138,7 @@
     $('#btn').click(function () {
       let input = $("#input").val()
         geocode(input, MAPBOX_API_KEY).then(function(result) {
+          marker.setLngLat([result[0], result[1]])
           map.easeTo({
             center: [result[0], result[1]]
           });
