@@ -52,12 +52,12 @@ const averageExperience = users.reduce((total, user) => {
 
 console.log(averageExperience)
 
-// const longestEmail = users.reduce((longestEmailSoFar, email) => {
-//     if()
-// }, 0);
+const longestEmail = users.reduce((email, user)=>(email.length > user.email.length) ? email : user.email, '')
 
-const userNames = users.reduce(function (allNames, user) {
+console.log(longestEmail)
 
-})
+const userNames = users.reduce((InString, user)=> {
+    return InString + user.name
+},'')
 
 console.log(userNames)
