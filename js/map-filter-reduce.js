@@ -57,7 +57,7 @@ const longestEmail = users.reduce((email, user)=>(email.length > user.email.leng
 console.log(longestEmail)
 
 const userNames = users.reduce((InString, user)=> {
-    return InString + user.name
+    return InString + (user.name + ' ')
 },'')
 
 console.log(userNames)
