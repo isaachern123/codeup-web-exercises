@@ -1,10 +1,13 @@
+
+
+
 (async function () {
 
-// function getCommit() {
-//     return fetch('data/docrob_github_events.json')
-//         .then((response) => response.json())
-//         .then((data) => data)
-// }
+function getCommit() {
+    return fetch('data/docrob_github_events.json')
+        .then((response) => response.json())
+        .then((data) => data)
+}
 
 function getCommit(userName, apiKey) {
     const url = `https://api.github.com/users/${userName}/events/public`
@@ -33,3 +36,5 @@ function wait(ms) {
     wait(3000).then(() => console.log('You\'ll see this after 3 seconds'));
 
 })();
+
+
